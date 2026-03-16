@@ -123,6 +123,7 @@ header {
     display: flex;
     gap: var(--spacing-sm);
     justify-content: center;
+    row-gap: 1rem;
     margin-bottom: var(--spacing-xl);
 }
 
@@ -132,7 +133,7 @@ header {
     border: 2px solid transparent;
     padding: var(--spacing-sm) var(--spacing-xl);
     border-radius: var(--radius-md);
-    font-size: var(--font-md);
+    font-size: var(--font-sm);
     font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -682,6 +683,18 @@ header {
         font-size: 1.8rem;
     }
 
+    .difficulty-tabs {
+        flex-wrap: wrap;
+        gap: var(--spacing-xs);
+    }
+
+    .tab-btn {
+        padding: var(--spacing-xs) var(--spacing-md);
+        font-size: var(--font-sm);
+        flex: 1 1 auto;
+        min-width: fit-content;
+    }
+
     .question {
         font-size: var(--font-2xl);
     }
@@ -692,7 +705,7 @@ header {
     }
 
     .grid-item {
-        padding: var(--spacing-lg) var(--spacing-sm);
+        padding: var(--spacing-md) var(--spacing-sm);
     }
 
     .history-item {
