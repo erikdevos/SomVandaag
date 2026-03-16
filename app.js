@@ -10,10 +10,12 @@ function rekenApp() {
         isCorrect: false,
         score: 0,
         historyItems: [],
+        difficultyFilter: 'all',
 
         categories: {
             tafels: {
                 title: 'Tafeltjes',
+                difficulty: 'basis',
                 subcategories: [
                     { id: 'tafel1', name: 'Tafel van 1', icon: '1️⃣', type: 'single', table: 1 },
                     { id: 'tafel2', name: 'Tafel van 2', icon: '2️⃣', type: 'single', table: 2 },
@@ -30,6 +32,7 @@ function rekenApp() {
             },
             optellen: {
                 title: 'Optellen',
+                difficulty: 'basis',
                 subcategories: [
                     { id: 'tot10', name: 'Tot 10', icon: '🔢', type: 'add', max: 10 },
                     { id: 'over10', name: 'Over de 10', icon: '📈', type: 'add', min: 5, max: 15 },
@@ -39,6 +42,7 @@ function rekenApp() {
             },
             aftrekken: {
                 title: 'Aftrekken',
+                difficulty: 'basis',
                 subcategories: [
                     { id: 'af_tot10', name: 'Tot 10', icon: '🔢', type: 'sub', max: 10 },
                     { id: 'af_tot20', name: 'Tot 20', icon: '📉', type: 'sub', max: 20 },
@@ -47,6 +51,7 @@ function rekenApp() {
             },
             delen: {
                 title: 'Delen',
+                difficulty: 'basis',
                 subcategories: [
                     { id: 'delen_makkelijk', name: 'Makkelijk (hele getallen)', icon: '🟢', type: 'div_easy' },
                     { id: 'delen_moeilijk', name: 'Moeilijker (met rest)', icon: '🟠', type: 'div_hard' },
@@ -54,6 +59,7 @@ function rekenApp() {
             },
             vermenigvuldigen: {
                 title: 'Vermenigvuldigen',
+                difficulty: 'basis',
                 subcategories: [
                     { id: 'verm_tot20', name: 'Tot 20', icon: '🔢', type: 'mult', max: 20 },
                     { id: 'verm_tot50', name: 'Tot 50', icon: '📊', type: 'mult', max: 50 },
@@ -62,6 +68,7 @@ function rekenApp() {
             },
             breuken: {
                 title: 'Breuken',
+                difficulty: 'moeilijk',
                 subcategories: [
                     { id: 'breuk_helft', name: '1/2 van...', icon: '½', type: 'frac_half' },
                     { id: 'breuk_kwart', name: '1/4 van...', icon: '¼', type: 'frac_quarter' },
@@ -70,6 +77,7 @@ function rekenApp() {
             },
             kommagetallen: {
                 title: 'Kommagetallen',
+                difficulty: 'moeilijk',
                 subcategories: [
                     { id: 'komma_optellen', name: 'Optellen', icon: '➕', type: 'dec_add' },
                     { id: 'komma_aftrekken', name: 'Aftrekken', icon: '➖', type: 'dec_sub' },
@@ -77,12 +85,85 @@ function rekenApp() {
             },
             procenten: {
                 title: 'Procenten',
+                difficulty: 'moeilijk',
                 subcategories: [
                     { id: 'proc_10', name: '10% van...', icon: '🔟', type: 'perc_10' },
                     { id: 'proc_25', name: '25% van...', icon: '🎯', type: 'perc_25' },
                     { id: 'proc_50', name: '50% van...', icon: '½', type: 'perc_50' },
                 ]
+            },
+            kwadraten: {
+                title: 'Kwadraten',
+                difficulty: 'moeilijk',
+                subcategories: [
+                    { id: 'kwadraat_tot10', name: 'Tot 10²', icon: '²', type: 'square', max: 10 },
+                    { id: 'kwadraat_tot15', name: 'Tot 15²', icon: '🔢', type: 'square', max: 15 },
+                    { id: 'kwadraat_tot20', name: 'Tot 20²', icon: '💯', type: 'square', max: 20 },
+                ]
+            },
+            wortels: {
+                title: 'Wortels',
+                difficulty: 'moeilijk',
+                subcategories: [
+                    { id: 'wortel_tot10', name: 'Tot √100', icon: '√', type: 'sqrt', max: 10 },
+                    { id: 'wortel_tot15', name: 'Tot √225', icon: '🔢', type: 'sqrt', max: 15 },
+                ]
+            },
+            negatief: {
+                title: 'Negatieve getallen',
+                difficulty: 'moeilijk',
+                subcategories: [
+                    { id: 'neg_optellen', name: 'Optellen', icon: '➕', type: 'neg_add' },
+                    { id: 'neg_aftrekken', name: 'Aftrekken', icon: '➖', type: 'neg_sub' },
+                    { id: 'neg_mix', name: 'Gemengd', icon: '🎲', type: 'neg_mix' },
+                ]
+            },
+            eenheden: {
+                title: 'Eenheden omrekenen',
+                difficulty: 'moeilijk',
+                subcategories: [
+                    { id: 'eenheid_lengte', name: 'Lengte (cm ↔ m)', icon: '📏', type: 'unit_length' },
+                    { id: 'eenheid_gewicht', name: 'Gewicht (g ↔ kg)', icon: '⚖️', type: 'unit_weight' },
+                    { id: 'eenheid_tijd', name: 'Tijd (min ↔ uur)', icon: '⏰', type: 'unit_time' },
+                ]
+            },
+            verhoudingen: {
+                title: 'Verhoudingen',
+                difficulty: 'moeilijk',
+                subcategories: [
+                    { id: 'verh_makkelijk', name: 'Eenvoudig', icon: '🎯', type: 'ratio_easy' },
+                    { id: 'verh_moeilijk', name: 'Uitdagend', icon: '🔢', type: 'ratio_hard' },
+                ]
+            },
+            klokkijken: {
+                title: 'Klokkijken',
+                difficulty: 'basis',
+                subcategories: [
+                    { id: 'klok_hele_uren', name: 'Hele uren', icon: '🕐', type: 'clock_hours' },
+                    { id: 'klok_halve_uren', name: 'Halve uren', icon: '🕐', type: 'clock_half' },
+                    { id: 'klok_kwartieren', name: 'Kwartieren', icon: '🕐', type: 'clock_quarter' },
+                    { id: 'klok_5min', name: 'Per 5 minuten', icon: '🕐', type: 'clock_5min' },
+                    { id: 'klok_alle', name: 'Alle minuten', icon: '🕐', type: 'clock_all' },
+                ]
             }
+        },
+
+        setDifficultyFilter(filter) {
+            this.difficultyFilter = filter;
+        },
+
+        getFilteredCategories() {
+            if (this.difficultyFilter === 'all') {
+                return this.categories;
+            }
+            
+            const filtered = {};
+            for (const [key, category] of Object.entries(this.categories)) {
+                if (category.difficulty === this.difficultyFilter) {
+                    filtered[key] = category;
+                }
+            }
+            return filtered;
         },
 
         selectCategory(category) {
@@ -161,6 +242,7 @@ function rekenApp() {
 
         createQuestion(sub) {
             let a, b, answer, questionText;
+            let isPM1, isPM2, isPM3, isPM4, isPM5;
 
             switch (sub.type) {
                 case 'single': // Enkele tafel
@@ -287,7 +369,162 @@ function rekenApp() {
                     answer = a * 0.5;
                     questionText = `50% van ${a} = `;
                     break;
+
+                case 'square': // Kwadraten
+                    a = this.randomInt(1, sub.max);
+                    answer = a * a;
+                    questionText = `${a}² = `;
+                    break;
+
+                case 'sqrt': // Wortels
+                    answer = this.randomInt(1, sub.max);
+                    a = answer * answer;
+                    questionText = `√${a} = `;
+                    break;
+
+                case 'neg_add': // Negatieve getallen optellen
+                    a = this.randomInt(-10, 10);
+                    b = this.randomInt(-10, 10);
+                    answer = a + b;
+                    questionText = `${a} + ${b} = `;
+                    break;
+
+                case 'neg_sub': // Negatieve getallen aftrekken
+                    a = this.randomInt(-10, 10);
+                    b = this.randomInt(-10, 10);
+                    answer = a - b;
+                    questionText = `${a} − ${b} = `;
+                    break;
+
+                case 'neg_mix': // Negatieve getallen gemengd
+                    a = this.randomInt(-10, 10);
+                    b = this.randomInt(-10, 10);
+                    const operation = this.randomInt(0, 1) === 0 ? '+' : '−';
+                    if (operation === '+') {
+                        answer = a + b;
+                        questionText = `${a} + ${b} = `;
+                    } else {
+                        answer = a - b;
+                        questionText = `${a} − ${b} = `;
+                    }
+                    break;
+
+                case 'unit_length': // Eenheden omrekenen - lengte
+                    const lengthDir = this.randomInt(0, 1);
+                    if (lengthDir === 0) {
+                        // cm naar m
+                        a = this.randomInt(50, 500);
+                        answer = a / 100;
+                        questionText = `${a} cm = ? m`;
+                    } else {
+                        // m naar cm
+                        a = this.randomInt(1, 10) + (this.randomInt(0, 9) / 10);
+                        answer = a * 100;
+                        questionText = `${a.toFixed(1)} m = ? cm`;
+                    }
+                    break;
+
+                case 'unit_weight': // Eenheden omrekenen - gewicht
+                    const weightDir = this.randomInt(0, 1);
+                    if (weightDir === 0) {
+                        // g naar kg
+                        a = this.randomInt(100, 5000);
+                        answer = a / 1000;
+                        questionText = `${a} g = ? kg`;
+                    } else {
+                        // kg naar g
+                        a = this.randomInt(1, 10) + (this.randomInt(0, 9) / 10);
+                        answer = a * 1000;
+                        questionText = `${a.toFixed(1)} kg = ? g`;
+                    }
+                    break;
+
+                case 'unit_time': // Eenheden omrekenen - tijd
+                    const timeDir = this.randomInt(0, 1);
+                    if (timeDir === 0) {
+                        // min naar uur
+                        a = this.randomInt(30, 300);
+                        answer = Math.round((a / 60) * 100) / 100;
+                        questionText = `${a} min = ? uur`;
+                    } else {
+                        // uur naar min
+                        a = this.randomInt(1, 5) + (this.randomInt(0, 3) * 0.25);
+                        answer = a * 60;
+                        questionText = `${a} uur = ? min`;
+                    }
+                    break;
+
+                case 'ratio_easy': // Verhoudingen eenvoudig
+                    const ratio1 = this.randomInt(1, 5);
+                    const ratio2 = this.randomInt(1, 5);
+                    const multiplier = this.randomInt(2, 6);
+                    a = ratio1 * multiplier;
+                    answer = ratio2 * multiplier;
+                    questionText = `${ratio1} : ${ratio2} = ${a} : ?`;
+                    break;
+
+                case 'ratio_hard': // Verhoudingen uitdagend
+                    const r1 = this.randomInt(2, 8);
+                    const r2 = this.randomInt(2, 8);
+                    const mult = this.randomInt(3, 10);
+                    a = r1 * mult;
+                    answer = r2 * mult;
+                    questionText = `${r1} : ${r2} = ${a} : ?`;
+                    break;
+
+                case 'clock_hours': // Klokkijken - hele uren
+                    a = this.randomInt(1, 12);
+                    b = 0;
+                    isPM1 = this.randomInt(0, 1) === 1;
+                    const hours24_1 = isPM1 ? (a === 12 ? 12 : a + 12) : (a === 12 ? 0 : a);
+                    answer = `${hours24_1}:00`;
+                    questionText = 'Hoe laat is het?';
+                    break;
+
+                case 'clock_half': // Klokkijken - halve uren
+                    a = this.randomInt(1, 12);
+                    b = this.randomInt(0, 1) * 30;
+                    isPM2 = this.randomInt(0, 1) === 1;
+                    const hours24_2 = isPM2 ? (a === 12 ? 12 : a + 12) : (a === 12 ? 0 : a);
+                    answer = `${hours24_2}:${b.toString().padStart(2, '0')}`;
+                    questionText = 'Hoe laat is het?';
+                    break;
+
+                case 'clock_quarter': // Klokkijken - kwartieren
+                    a = this.randomInt(1, 12);
+                    b = this.randomInt(0, 3) * 15;
+                    isPM3 = this.randomInt(0, 1) === 1;
+                    const hours24_3 = isPM3 ? (a === 12 ? 12 : a + 12) : (a === 12 ? 0 : a);
+                    answer = `${hours24_3}:${b.toString().padStart(2, '0')}`;
+                    questionText = 'Hoe laat is het?';
+                    break;
+
+                case 'clock_5min': // Klokkijken - per 5 minuten
+                    a = this.randomInt(1, 12);
+                    b = this.randomInt(0, 11) * 5;
+                    isPM4 = this.randomInt(0, 1) === 1;
+                    const hours24_4 = isPM4 ? (a === 12 ? 12 : a + 12) : (a === 12 ? 0 : a);
+                    answer = `${hours24_4}:${b.toString().padStart(2, '0')}`;
+                    questionText = 'Hoe laat is het?';
+                    break;
+
+                case 'clock_all': // Klokkijken - alle minuten
+                    a = this.randomInt(1, 12);
+                    b = this.randomInt(0, 59);
+                    isPM5 = this.randomInt(0, 1) === 1;
+                    const hours24_5 = isPM5 ? (a === 12 ? 12 : a + 12) : (a === 12 ? 0 : a);
+                    answer = `${hours24_5}:${b.toString().padStart(2, '0')}`;
+                    questionText = 'Hoe laat is het?';
+                    break;
             }
+
+            // Store isPM for clock questions
+            let isPM = undefined;
+            if (sub.type === 'clock_hours') isPM = isPM1;
+            else if (sub.type === 'clock_half') isPM = isPM2;
+            else if (sub.type === 'clock_quarter') isPM = isPM3;
+            else if (sub.type === 'clock_5min') isPM = isPM4;
+            else if (sub.type === 'clock_all') isPM = isPM5;
 
             return {
                 a,
@@ -295,7 +532,8 @@ function rekenApp() {
                 answer,
                 questionText,
                 userAnswer: null,
-                type: sub.type
+                type: sub.type,
+                isPM
             };
         },
 
@@ -315,14 +553,39 @@ function rekenApp() {
             if (this.userAnswer === '' || this.showFeedback) return;
 
             const q = this.questions[this.currentQuestionIndex];
-            const userNum = parseFloat(this.userAnswer);
             
-            q.userAnswer = userNum;
-            
-            if (q.type === 'dec_add' || q.type === 'dec_sub') {
-                this.isCorrect = Math.abs(userNum - q.answer) < 0.01;
+            // Handle clock reading exercises (time format)
+            if (q.type && q.type.startsWith('clock_')) {
+                const userTime = this.userAnswer.trim();
+                q.userAnswer = userTime;
+                
+                // Normalize both answers to H:MM format for comparison
+                const normalizeTime = (time) => {
+                    const parts = time.split(':');
+                    if (parts.length !== 2) return null;
+                    const h = parseInt(parts[0]);
+                    const m = parseInt(parts[1]);
+                    if (isNaN(h) || isNaN(m) || h < 1 || h > 12 || m < 0 || m > 59) return null;
+                    return `${h}:${m.toString().padStart(2, '0')}`;
+                };
+                
+                const normalizedUser = normalizeTime(userTime);
+                const normalizedAnswer = normalizeTime(q.answer);
+                
+                this.isCorrect = normalizedUser === normalizedAnswer;
             } else {
-                this.isCorrect = userNum === q.answer;
+                // Handle numeric answers
+                const userNum = parseFloat(this.userAnswer);
+                q.userAnswer = userNum;
+                
+                // Types that need decimal tolerance
+                const decimalTypes = ['dec_add', 'dec_sub', 'unit_length', 'unit_weight', 'unit_time', 'perc_10', 'perc_25', 'perc_50'];
+                
+                if (decimalTypes.includes(q.type)) {
+                    this.isCorrect = Math.abs(userNum - q.answer) < 0.01;
+                } else {
+                    this.isCorrect = userNum === q.answer;
+                }
             }
             
             if (this.isCorrect) {
