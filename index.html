@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SomVandaag - Rekenoefeningen</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+    <div class="container" x-data="rekenApp()">
+        <header>
+            <h1>🧮 SomVandaag</h1>
+            <p>Oefen je rekenen!</p>
+        </header>
+
+        <div class="card">
+            <!-- Hoofdmenu -->
+            <template x-if="screen === 'home'">
+                <div x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 transform scale-95"
+                     x-transition:enter-end="opacity-100 transform scale-100"
+                     x-transition:leave="transition ease-in duration-200"
+                     x-transition:leave-start="opacity-100 transform scale-100"
+                     x-transition:leave-end="opacity-0 transform scale-95">
+                    <h2 class="section-title">Kies een oefening</h2>
+                    <div class="grid">
+                        <button class="grid-item tafels" @click="selectCategory('tafels')">
+                            <div class="icon">✖️</div>
+                            <div>Tafeltjes</div>
+                        </button>
+                        <button class="grid-item optellen" @click="selectCategory('optellen')">
+                            <div class="icon">➕</div>
+                            <div>Optellen</div>
+                        </button>
+                        <button class="grid-item aftrekken" @click="selectCategory('aftrekken')">
+                            <div class="icon">➖</div>
+                            <div>Aftrekken</div>
+                        </button>
+                        <button class="grid-item delen" @click="selectCategory('delen')">
+                            <div class="icon">➗</div>
+                            <div>Delen</div>
+                        </button>
+                        <button class="grid-item vermenigvuldigen" @click="selectCategory('vermenigvuldigen')">
+                            <div class="icon">🔢</div>
+                            <div>Vermenigvuldigen</div>
+                        </button>
+                        <button class="grid-item breuken" @click="selectCategory('breuken')">
+                            <div class="icon">🍰</div>
+                            <div>Breuken</div>
+                        </button>
+                        <button class="grid-item kommagetallen" @click="selectCategory('kommagetallen')">
+                            <div class="icon">🔢</div>
+                            <div>Kommagetallen</div>
+                        </button>
+                        <button class="grid-item procenten" @click="selectCategory('procenten')">
+                            <div class="icon">💯</div>
+                            <div>Procenten</div>
+                        </button>
+                    </div>
+                    <div class="history-btn">
+                        <button class="btn-secondary" @click="goToHistory()">📊 Bekijk geschiedenis</button>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Subcategorie selectie -->
+            <template x-if="screen === 'subcategory'">
+                <div x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 transform scale-95"
+                     x-transition:enter-end="opacity-100 transform scale-100"
+                     x-transition:leave="transition ease-in duration-200"
+                     x-transition:leave-start="opacity-100 transform scale-100"
+                     x-transition:leave-end="opacity-0 transform scale-95">
+                    <button class="back-btn" @click="goHome()">← Terug</button>
+                    <h2 class="section-title" x-text="getCategoryTitle()"></h2>
+                    <div class="grid">
+                        <template x-for="sub in getSubcategories()" :key="sub.id">
+                            <button class="grid-item" 
+                                    :class="currentCategory" 
+                                    @click="startQuiz(sub)">
+                                <div class="icon" x-text="sub.icon"></div>
+                                <div x-text="sub.name"></div>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Quiz -->
+            <template x-if="screen === 'quiz'">
+                <div class="quiz-container"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 transform scale-95"
+                     x-transition:enter-end="opacity-100 transform scale-100"
+                     x-transition:leave="transition ease-in duration-200"
+                     x-transition:leave-start="opacity-100 transform scale-100"
+                     x-transition:leave-end="opacity-0 transform scale-95">
+                    <button class="back-btn" @click="goToSubcategory()">← Stoppen</button>
+                    
+                    <div class="progress-text">
+                        Vraag <span x-text="currentQuestionIndex + 1"></span> van <span x-text="questions.length"></span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" :style="'width: ' + ((currentQuestionIndex + 1) / questions.length * 100) + '%'"></div>
+                    </div>
+
+                    <div class="question" x-text="getCurrentQuestion()"></div>
+
+                    <input type="number" 
+                           step="0.1"
+                           class="answer-input" 
+                           :class="{ 'correct': showFeedback && isCorrect, 'incorrect': showFeedback && !isCorrect }"
+                           x-model="userAnswer"
+                           @keyup.enter="checkAnswer()"
+                           :disabled="showFeedback"
+                           x-ref="answerInput"
+                           placeholder="?">
+
+                    <div>
+                        <button class="submit-btn" 
+                                @click="checkAnswer()" 
+                                :disabled="userAnswer === '' || showFeedback"
+                                x-show="!showFeedback">
+                            Controleer
+                        </button>
+                        <button class="submit-btn" 
+                                @click="nextQuestion()" 
+                                x-show="showFeedback">
+                            <span x-text="currentQuestionIndex < questions.length - 1 ? 'Volgende →' : 'Bekijk resultaat'"></span>
+                        </button>
+                    </div>
+
+                    <div class="feedback" 
+                         :class="{ 'correct': isCorrect, 'incorrect': !isCorrect }"
+                         x-show="showFeedback"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 transform translate-y-2"
+                         x-transition:enter-end="opacity-100 transform translate-y-0">
+                        <template x-if="isCorrect">
+                            <span>✅ Goed zo!</span>
+                        </template>
+                        <template x-if="!isCorrect">
+                            <span>❌ Helaas! Het antwoord was <span x-text="questions[currentQuestionIndex].answer"></span></span>
+                        </template>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Geschiedenis -->
+            <template x-if="screen === 'history'">
+                <div x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 transform scale-95"
+                     x-transition:enter-end="opacity-100 transform scale-100"
+                     x-transition:leave="transition ease-in duration-200"
+                     x-transition:leave-start="opacity-100 transform scale-100"
+                     x-transition:leave-end="opacity-0 transform scale-95">
+                    <button class="back-btn" @click="goHome()">← Terug</button>
+                    <h2 class="section-title">Geschiedenis</h2>
+                    
+                    <template x-if="historyItems.length === 0">
+                        <div class="empty-history">
+                            <div class="emoji">📚</div>
+                            <p>Nog geen resultaten. Begin met oefenen!</p>
+                        </div>
+                    </template>
+
+                    <template x-if="historyItems.length > 0">
+                        <div class="history-list">
+                            <template x-for="(item, index) in historyItems" :key="index">
+                                <div class="history-item">
+                                    <div class="history-info">
+                                        <div class="history-title" x-text="getHistoryTitle(item)"></div>
+                                        <div class="history-date" x-text="formatDate(item.date)"></div>
+                                    </div>
+                                    <div class="history-score">
+                                        <span class="score-correct" x-text="item.score + ' goed'"></span>
+                                        <span class="score-separator">-</span>
+                                        <span class="score-wrong" x-text="(item.total - item.score) + ' fout'"></span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Resultaten -->
+            <template x-if="screen === 'results'">
+                <div class="results"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 transform scale-95"
+                     x-transition:enter-end="opacity-100 transform scale-100"
+                     x-transition:leave="transition ease-in duration-200"
+                     x-transition:leave-start="opacity-100 transform scale-100"
+                     x-transition:leave-end="opacity-0 transform scale-95">
+                    <div class="emoji" x-text="getResultEmoji()"></div>
+                    <div class="results-score">
+                        <span x-text="score"></span> / <span x-text="questions.length"></span>
+                    </div>
+                    <div class="results-message" x-text="getResultMessage()"></div>
+
+                    <div class="btn-group">
+                        <button class="btn-primary" @click="restartQuiz()">🔄 Opnieuw</button>
+                        <button class="btn-secondary" @click="goToSubcategory()">📚 Andere oefening</button>
+                        <button class="btn-secondary" @click="goHome()">🏠 Hoofdmenu</button>
+                    </div>
+                    
+                    <div class="results-details">
+                        <template x-for="(q, index) in questions" :key="index">
+                            <div class="result-item" :class="{ 'correct': q.userAnswer == q.answer, 'incorrect': q.userAnswer != q.answer }">
+                                <span x-text="q.questionText"></span>
+                                <span>
+                                    <span x-text="q.userAnswer"></span>
+                                    <span x-show="q.userAnswer != q.answer"> (was: <span x-text="q.answer"></span>)</span>
+                                    <span x-text="q.userAnswer == q.answer ? '✅' : '❌'"></span>
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+
+
+                </div>
+            </template>
+        </div>
+    </div>
+</body>
+</html>
