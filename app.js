@@ -146,10 +146,16 @@ function rekenApp() {
 
         generateQuestions(sub) {
             this.questions = [];
+            const usedQuestions = new Set();
             
-            for (let i = 0; i < 10; i++) {
+            while (this.questions.length < 10) {
                 let question = this.createQuestion(sub);
-                this.questions.push(question);
+                const questionKey = `${question.questionText}${question.answer}`;
+                
+                if (!usedQuestions.has(questionKey)) {
+                    usedQuestions.add(questionKey);
+                    this.questions.push(question);
+                }
             }
         },
 
